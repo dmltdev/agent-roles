@@ -1,0 +1,23 @@
+{
+  "name": "agent-roles",
+  "description": "Agent Roles plugin marketplace",
+  "owner": {
+    "name": "Dmytro L.",
+    "email": "dmltdev@proton.me"
+  },
+  "plugins": [
+    {
+      "name": "agent-roles",
+      "description": "Role-based coding agents for architecture, product, implementation, verification, security, and delivery judgment",
+      "version": "0.1.0",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/dmltdev/agent-roles.git"
+      },
+      "author": {
+        "name": "Dmytro L.",
+        "email": "dmltdev@proton.me"
+      }
+    }
+  ]
+}

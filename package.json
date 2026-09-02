@@ -1,0 +1,25 @@
+{
+  "name": "agent-roles",
+  "version": "0.1.0",
+  "description": "Role-based coding agents for architecture, product, implementation, verification, security, and delivery judgment",
+  "license": "MIT",
+  "homepage": "https://github.com/dmltdev/agent-roles",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dmltdev/agent-roles.git"
+  },
+  "keywords": [
+    "pi-package",
+    "agents",
+    "agent-roles",
+    "architecture",
+    "verification",
+    "security",
+    "delivery"
+  ],
+  "pi": {
+    "agents": [
+      "agents"
+    ]
+  }
+}

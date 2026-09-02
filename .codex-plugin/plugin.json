@@ -1,0 +1,39 @@
+{
+  "name": "agent-roles",
+  "version": "0.1.0",
+  "description": "Role-based coding agents for architecture, product, implementation, verification, security, and delivery judgment",
+  "author": {
+    "name": "Dmytro L.",
+    "email": "dmltdev@proton.me"
+  },
+  "homepage": "https://github.com/dmltdev/agent-roles",
+  "repository": "https://github.com/dmltdev/agent-roles",
+  "license": "MIT",
+  "keywords": [
+    "agents",
+    "agent-roles",
+    "architecture",
+    "verification",
+    "security",
+    "delivery"
+  ],
+  "agents": "./agents/",
+  "interface": {
+    "displayName": "Agent Roles",
+    "shortDescription": "Role-based coding agents",
+    "longDescription": "Agents for product architecture, systems architecture, principal engineering, verification, security architecture, and delivery readiness.",
+    "developerName": "Dmytro L.",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Interactive",
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/dmltdev/agent-roles",
+    "defaultPrompt": [
+      "Use systems-architect to review this design",
+      "Use verification-lead to prove this change",
+      "Use delivery-lead to prepare this branch for review"
+    ]
+  }
+}

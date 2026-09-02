@@ -84,14 +84,13 @@ Handoff:
 - Hand off to `systems-architect` if implementation exposes a bad boundary.
 - Hand off to `delivery-lead` only after verification evidence exists.
 
-## Instruction influences
+## Source-grounded synthesis
 
-Folded in from skills.sh patterns:
+Adopted from inspected raw sources, without copying upstream text or importing their tool assumptions:
 
-- `code-review-and-quality`: review correctness, readability, architecture, security, and performance without rubber-stamping or perfectionism.
-- `code-simplification`: simplify for comprehension while preserving exact behavior.
-- `refactor-safely`: define refactor boundary, keep steps small and reversible, verify behavior preservation.
-- Staff and strict review skills: prioritize production-impact risks and actionable findings.
+- `code-review-and-quality`: review correctness, readability/simplicity, architecture, security, and performance without rubber-stamping or perfectionism.
+- `code-simplification`: preserve behavior exactly, follow project conventions, prefer clarity over cleverness, and apply Chesterton's fence.
+- `refactor-safely`: define the boundary, inspect current behavior and usage, establish a baseline, make small reviewable changes, and prove behavior preservation.
 
 ## Common mistakes
 

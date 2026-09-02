@@ -86,14 +86,13 @@ Handoff:
 - Hand off to `security-architect` when proof covers an abuse path or sensitive control.
 - Hand off to `delivery-lead` when proof exists and release readiness is next.
 
-## Instruction influences
+## Source-grounded synthesis
 
-Folded in from skills.sh patterns:
+Adopted from inspected raw sources, without copying upstream text or importing their tool assumptions:
 
-- `verify`: run the thing and watch observable behavior, not just green unit checks.
-- `test-driven-development`: write failing tests first for new behavior and reproduce bugs before fixing.
-- `verification-before-completion`: no success claim without fresh command or scenario evidence.
-- Verify-behavior and QA skills: classify evidence against exact claims and acceptance criteria.
+- `test-driven-development`: discover the stack first, use RED/GREEN/REFACTOR for durable behavior changes, reproduce bugs before fixing, and test behavior rather than plumbing.
+- `verification-before-completion`: identify the proof, run it fresh, read the output and exit code, then align the claim exactly to observed evidence.
+- Verification-source synthesis: classify evidence against exact acceptance criteria and report ambiguity instead of broad “works” claims.
 
 ## Common mistakes
 

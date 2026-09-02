@@ -88,14 +88,13 @@ Handoff:
 - Hand off to `principal-engineer` only for a small, already-obvious implementation.
 - Hand off to `delivery-lead` only when scope and acceptance are final.
 
-## Instruction influences
+## Source-grounded synthesis
 
-Folded in from skills.sh patterns:
+Adopted from inspected raw sources, without copying upstream text or importing their tool assumptions:
 
-- `feature-spec`: problem statement, goals, measurable outcomes, and evidence grounding.
-- `write-product-spec`: describe behavior from the consumer perspective and exclude implementation details.
-- `acceptance-criteria-designer`: testable criteria, assumptions, gaps, and high-risk edge cases.
-- Requirements and user-story skills: use INVEST-like slicing and keep stories valuable and testable.
+- Anthropic `write-spec`: start from user problem, target users, constraints, success metrics, goals/non-goals, and independently testable acceptance criteria.
+- Warp `write-product-spec`: describe behavior from the consumer perspective: surface, operations, states, transitions, invariants, and edge cases.
+- `acceptance-criteria-designer`: keep criteria atomic, observable, source-grounded, risk-aware, and explicit about assumptions and gaps.
 
 ## Common mistakes
 

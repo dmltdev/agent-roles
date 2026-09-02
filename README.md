@@ -105,18 +105,20 @@ Use delivery-lead to decide whether this branch is ready to push or merge. Inclu
 
 ## Instruction sources
 
-The role contracts were distilled from related skills.sh pages and local plugin conventions. The goal is not to clone those skills; it is to fold their strongest instructions into role-specific agents.
+The role contracts are source-grounded syntheses from related skills.sh candidates. Each shortlisted candidate was followed to raw GitHub `SKILL.md` instructions and license evidence where available. The agents do not copy upstream text, command names, repository paths, or tool assumptions.
 
-| Role | Primary influences |
+Auditable source matrix: `docs/research/skills-sh-role-candidates.md`.
+OMP install verification: `docs/research/omp-install-verification.md`.
+
+
+| Role | Raw-source-backed synthesis |
 |---|---|
-| `product-architect` | `feature-spec`, `write-product-spec`, `acceptance-criteria-designer`, PRD, requirements, and user-story skills. |
-| `systems-architect` | `architecture-review`, `architect-agent`, `system-architecture`, `api-designer`, `backend-architect`, `implementation-planner`. |
-| `principal-engineer` | `code-review-and-quality`, `code-simplification`, `refactor-safely`, staff/strict/code-quality review skills. |
-| `verification-lead` | `verify`, `test-driven-development`, `verification-before-completion`, verify-behavior, QA, and regression skills. |
-| `security-architect` | `security-threat-model`, `api-security-review`, code-review-security, security-test-generator, OWASP playbook skills. |
-| `delivery-lead` | `ship`, `release`, pre-merge, pre-release, rollout, git workflow, and PR readiness skills. |
-
-Research notes live in `docs/research/skills-sh-role-candidates.md`.
+| `product-architect` | Anthropic `write-spec`, Warp `write-product-spec`, and `acceptance-criteria-designer`: consumer behavior, measurable outcomes, non-goals, and observable criteria. |
+| `systems-architect` | `architecture-review`: explicit decisions, boundaries, trade-offs, guardrails, and first safe slices. |
+| `principal-engineer` | `code-review-and-quality`, `code-simplification`, and `refactor-safely`: correctness, boring maintainability, clean cutover, behavior preservation, and targeted proof. |
+| `verification-lead` | `test-driven-development` and `verification-before-completion`: behavioral tests where durable contracts changed and fresh evidence before claims. |
+| `security-architect` | OpenAI `security-threat-model` and OWASP `api-security-review`: trust boundaries, assets, abuse paths, API risks, assumptions, and testable controls. |
+| `delivery-lead` | `ship`, skrrt `release`, and `pre-release`: explicit git/release boundaries, pre-launch gates, real-history release notes, immutable release artifacts, blockers, rollback, and reviewer evidence. |
 
 ## Boundary
 

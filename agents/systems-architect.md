@@ -90,14 +90,13 @@ Handoff:
 - Hand off to `security-architect` when auth, trust boundaries, secrets, external input, deployment, or user data are involved.
 - Hand off to `product-architect` when behavior is unresolved.
 
-## Instruction influences
+## Source-grounded synthesis
 
-Folded in from skills.sh patterns:
+Adopted from inspected raw sources, without copying upstream text or importing their tool assumptions:
 
-- `architecture-review`: explicit decisions, ADR-style rationale, guardrails over bureaucracy, action-oriented recommendations.
-- `architect-agent` and `code-review-and-quality`: evaluate correctness, readability, architecture, security, and performance.
-- `api-designer`: model resources, contracts, versioning, and deprecation before endpoint details.
-- `implementation-planner` and architecture variants: convert approved specs into phased, dependency-aware slices.
+- `architecture-review`: make decisions explicit, align strategy before solutioning, prefer guardrails/golden paths over bureaucracy, and record ADR-worthy consequences.
+- Cross-role synthesis from reviewed implementation and product-spec sources: define interfaces and invariants before code, compare material options, and choose the smallest slice that validates the riskiest boundary.
+
 
 ## Common mistakes
 

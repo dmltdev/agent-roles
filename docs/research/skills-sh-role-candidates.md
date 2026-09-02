@@ -1,156 +1,132 @@
 # skills.sh role candidates for agent-roles
 
-## Candidate inventory searched/read
+This note records the source audit behind the `agent-roles` plugin. The role agents are not copies of the source skills. They synthesize reusable execution principles into six role-specific agents and intentionally drop upstream tool names, command assumptions, output templates, and repository-specific paths.
 
-| Category | Candidate | Source | Reusable patterns |
+## Audit standard
+
+- Use skills.sh as discovery.
+- Follow each shortlisted skills.sh candidate to the owning GitHub repository.
+- Inspect raw `SKILL.md` files, referenced local instructions only when needed, and repository license files or the GitHub license API.
+- Treat uninspected candidates as discovery leads only; do not base shipped role instructions on search summaries.
+- Attribute sources here. No source text is copied into the role agents.
+
+## Raw-source source matrix
+
+| Role | Source skill | skills.sh discovery | Raw instruction inspected | License evidence | Adopted principles | Rejected upstream-specific assumptions |
+|---|---|---|---|---|---|---|
+| `product-architect` | `write-spec` | https://www.skills.sh/anthropics/product-management/write-spec | https://raw.githubusercontent.com/anthropics/knowledge-work-plugins/main/product-management/skills/write-spec/SKILL.md | Apache-2.0; https://raw.githubusercontent.com/anthropics/knowledge-work-plugins/main/product-management/LICENSE | Start from user problem, target users, constraints, prior art, measurable outcomes, goals/non-goals, user stories, P0/P1/P2 requirements, independently testable acceptance criteria, and explicit scope-creep prevention. | Do not import connector placeholders, project-tracker/knowledge-base/design tool assumptions, or PRD section bulk as mandatory agent output. |
+| `product-architect` | `write-product-spec` | https://www.skills.sh/warpdotdev/common-skills/write-product-spec | https://raw.githubusercontent.com/warpdotdev/common-skills/main/.agents/skills/write-product-spec/SKILL.md | MIT; https://raw.githubusercontent.com/warpdotdev/common-skills/main/LICENSE | Specify behavior from the consumer perspective; enumerate surface, operations, states, transitions, invariants, edge/error/loading/cancellation cases; keep implementation details out of product intent. | Do not require Warp-specific `PRODUCT.md`, `TECH.md`, Figma questioning, directory conventions, or validation-section rules. |
+| `product-architect` | `acceptance-criteria-designer` | https://www.skills.sh/jovd83/acceptance-criteria-designer | https://raw.githubusercontent.com/jovd83/acceptance-criteria-designer/main/SKILL.md | MIT; https://raw.githubusercontent.com/jovd83/acceptance-criteria-designer/main/LICENSE | Criteria are atomic, observable, source-grounded, risk-aware, and can be emitted as Gherkin, checklist, TDD-ready, or sentence formats depending on audience. Gaps and assumptions must be explicit. | Do not copy the JSON response contract or treat every request as acceptance-criteria authoring. |
+| `systems-architect` | `architecture-review` | https://www.skills.sh/marcus/marcus-skills/architecture-review | https://raw.githubusercontent.com/marcus/marcus-skills/main/skills/architecture-review/SKILL.md | No repository license found through GitHub license API or raw `LICENSE` lookup during audit. | Make decisions explicit; align strategy before solutioning; use an architecture decision cascade; prefer guardrails/golden paths over bureaucratic gates; record ADR-worthy consequences. | Do not copy ADR templates or assume greenfield SaaS/project phases. |
+| `principal-engineer` | `code-review-and-quality` | https://www.skills.sh/addyosmani/agent-skills/code-review-and-quality | https://raw.githubusercontent.com/addyosmani/agent-skills/main/skills/code-review-and-quality/SKILL.md | MIT; https://raw.githubusercontent.com/addyosmani/agent-skills/main/LICENSE | Review across correctness, readability/simplicity, architecture, security, and performance; read tests first; classify severity; avoid both rubber-stamping and perfectionism. | Do not import full review checklists or dependency/license scanning as mandatory for every implementation assignment. |
+| `principal-engineer` | `code-simplification` | https://www.skills.sh/addyosmani/agent-skills/code-simplification | https://raw.githubusercontent.com/addyosmani/agent-skills/main/skills/code-simplification/SKILL.md | MIT; https://raw.githubusercontent.com/addyosmani/agent-skills/main/LICENSE | Preserve behavior exactly, follow project conventions, prefer clarity over cleverness, apply Chesterton's fence, simplify incrementally, and verify after the change. | Do not make simplification a license to rewrite unrelated code or run broad codemods by default. |
+| `principal-engineer` | `refactor-safely` | https://www.skills.sh/mshindi-labs/agent-skills/refactor-safely | https://raw.githubusercontent.com/mshindi-labs/agent-skills/main/skills/refactor-safely/SKILL.md | No repository license found through GitHub license API or raw `LICENSE` lookup during audit. | Define the refactor boundary, inspect current behavior and usage, establish a behavior baseline, choose the smallest safe strategy, protect public behavior, and report behavior-preservation evidence. | Do not inherit its exact step headings or any assumption that refactoring is always the requested action. |
+| `verification-lead` | `test-driven-development` | https://www.skills.sh/addyosmani/agent-skills/test-driven-development | https://raw.githubusercontent.com/addyosmani/agent-skills/main/skills/test-driven-development/SKILL.md | MIT; https://raw.githubusercontent.com/addyosmani/agent-skills/main/LICENSE | Discover test tooling first, drive RED/GREEN/REFACTOR when durable behavior is being added, reproduce bugs before fixing, test behavior and state rather than implementation interactions, prefer DAMP clarity over DRY test cleverness. | Do not require TDD for every proof task; one-time smoke evidence remains valid for runtime verification. |
+| `verification-lead` | `verification-before-completion` | https://www.skills.sh/obra/superpowers/verification-before-completion | https://raw.githubusercontent.com/obra/superpowers/main/skills/verification-before-completion/SKILL.md | MIT; https://raw.githubusercontent.com/obra/superpowers/main/LICENSE | No completion/fixed/passing claim without fresh evidence; identify proof, run it, read full output/exit code, and align the claim exactly to observed evidence. | Do not import Superpowers-specific invocation rules into this standalone role plugin. |
+| `security-architect` | `security-threat-model` | https://www.skills.sh/openai/skills/security-threat-model | https://raw.githubusercontent.com/openai/skills/main/skills/.curated/security-threat-model/SKILL.md | Apache-2.0; https://raw.githubusercontent.com/openai/skills/main/skills/.curated/security-threat-model/LICENSE.txt | Scope the system model, separate runtime from CI/dev/tests, map trust boundaries/assets/entry points, calibrate realistic attacker capabilities, enumerate abuse paths, prioritize by likelihood and impact, and make assumptions explicit. | Do not require its repository-summary prompt template, reference-file workflow, or final threat-model file naming convention. |
+| `security-architect` | `api-security-review` | https://www.skills.sh/OWASP/secure-agent-playbook/api-security-review | https://raw.githubusercontent.com/OWASP/secure-agent-playbook/main/plugins/code-security-skills/skills/api-security-review/SKILL.md | CC-BY-4.0 in skill frontmatter and repository license; https://raw.githubusercontent.com/OWASP/secure-agent-playbook/main/LICENSE.md | Inventory API surface and auth mechanisms; assess OWASP API Top 10 risks, including BOLA/IDOR, broken auth, mass assignment/over-exposure, rate limits/DoS, BFLA, SSRF, misconfiguration, inventory/versioning, and unsafe upstream consumption. | Do not promise scanner execution, proof-of-concept payloads, or full OWASP report depth unless the assignment asks for that level of audit. |
+| `delivery-lead` | `ship` | https://www.skills.sh/helderberto/agent-skills/ship | https://raw.githubusercontent.com/helderberto/agent-skills/main/skills/ship/SKILL.md | MIT; https://raw.githubusercontent.com/helderberto/agent-skills/main/LICENSE | Use a pre-launch gate before commit/push, inspect status/diff, preserve explicit git boundaries, avoid force push, and stop on validation or sensitive-data failures. | Do not import `validate-code`, `safe-repo`, heredoc commit style, automatic rebase, or direct push defaults. |
+| `delivery-lead` | `release` | https://www.skills.sh/skrrt-sh/skills/release | https://raw.githubusercontent.com/skrrt-sh/skills/main/skills/ship/release/SKILL.md | MIT; https://raw.githubusercontent.com/skrrt-sh/skills/main/LICENSE | Classify release requests before mutation; derive release notes from tags/commits/diffs; validate branch/tag policy; treat tags as immutable; never invent tests, changes, contributors, or links. | Requested direct paths were absent; do not import `.agents/ship.md`, Claude plugin release references, forge scripts, gitmoji conventions, or direct publish/push authority. |
+| `delivery-lead` | `pre-release` | https://www.skills.sh/marcfargas/skills/pre-release | https://raw.githubusercontent.com/marcfargas/skills/main/pre-release/SKILL.md | MIT; https://raw.githubusercontent.com/marcfargas/skills/main/LICENSE | Release readiness needs explicit check results, license/package metadata review, secret/template scans, README/readiness review, user-facing release notes from real history, and blocker/warning classification. | Do not require npm, Changesets, Trusted Publishers, or package-release mechanics for non-package delivery work. |
+
+## Screened candidates not used as shipped instruction sources
+
+These candidates were discovered from skills.sh/search results and were useful for coverage mapping, but their raw source was not inspected deeply enough for shipped instruction synthesis in this pass.
+
+| Category | Candidate | Source | Status |
 |---|---|---|---|
-| Architecture | architecture-scaffold | https://www.skills.sh/petekp/claude-code-setup/architecture-scaffold | Turn architecture spec into typed skeleton; separate structure from logic; compiler as guardrail before implementation. |
-| Architecture | architecture-review | https://www.skills.sh/marcus/marcus-skills/architecture-review | Make decisions explicit; prefer guardrails/golden paths over gates; document decisions as ADRs. |
-| Architecture | system-architecture | https://skills.sh/hieutrtr/ai1-skills/system-architecture | Use for structural decisions, schema/refactor tradeoffs, ADRs; output architecture decisions and next-step handoff. |
-| Architecture | api-designer | https://skills.sh/jeffallan/claude-skills/api-designer | Analyze domain, model resources, specify contract, validate, mock, plan evolution/deprecation. |
-| Architecture | backend-architect | https://www.skills.sh/rmyndharis/antigravity-skills/backend-architect | Capture domain/non-functional requirements; define service boundaries/contracts; identify risks, observability, rollout. |
-| Architecture | implementation-planner | https://www.skills.sh/jumppad-labs/jumppad/implementation-planner | Planning stays skeptical/iterative; separate working notes from deliverables; delegate research, verify findings. |
-| Product/spec | requirements-specification | https://www.skills.sh/nicepkg/ai-workflow/requirements-specification | User stories should be INVEST; requirements should manage scope ruthlessly and be testable. |
-| Product/spec | deliver-prd | https://www.skills.sh/product-on-purpose/pm-skills/deliver-prd | PRD communicates what/why, scope boundaries, success criteria; use after problem alignment and before engineering. |
-| Product/spec | deliver-acceptance-criteria | https://www.skills.sh/product-on-purpose/pm-skills/deliver-acceptance-criteria | ACs are observable Given/When/Then pass/fail conditions; story-scoped, QA-ready, include edge/error/non-functional expectations. |
-| Product/spec | specification | https://www.skills.sh/0xranx/agentbrief/specification | Spec structure: problem statement, why now/cost of not solving, primary/secondary/guardrail metrics, user stories. |
-| Product/spec | write-product-spec | https://www.skills.sh/warpdotdev/common-skills/write-product-spec | Product spec from consumer perspective; specify surface, operations, invariants, edge cases; exclude implementation details. |
-| Product/spec | deliver-user-stories | https://www.skills.sh/product-on-purpose/pm-skills/deliver-user-stories | Break approved PRD/features into user-value increments without prescribing implementation. |
-| Product/spec | user-stories | https://www.skills.sh/phuryn/pm-skills/user-stories | Use 3 C's and INVEST; include description, design links, assumptions, acceptance criteria. |
-| Code quality | code-reviewer | https://www.skills.sh/jeffallan/claude-skills/code-reviewer | Review context first; summarize PR intent; inspect structure, details, tests; immediate critical findings. |
-| Code quality | code-quality | https://www.skills.sh/xbklairith/kisune/code-quality | Trigger on review/refactor/optimization/code smells/pre-commit/after feature; systematic checklist. |
-| Code quality | forge-review | https://www.skills.sh/mgiovani/cc-arsenal/forge-review | Code-centric analysis only; architecture/design/readability/maintainability/refactoring; independent of story fit. |
-| Code quality | code-review diagnostic | https://skills.sh/jwynia/agent-skills/code-review | Review before merge/PR/self-review; not for writing code, architecture, or requirements. |
-| Code quality | comprehensive-review-full-review | https://skills.sh/rmyndharis/antigravity-skills/comprehensive-review-full-review | Multi-dimensional review: quality, security, performance, testing, docs; consolidate prioritized remediation. |
-| Code quality | technical-advisory | https://skills.sh/404kidwiz/claude-supercode-skills/technical-advisory | Senior guidance for complex engineering tradeoffs across architecture, distributed systems, security, performance. |
-| Verification | verification-before-completion | https://www.skills.sh/obra/superpowers/verification-before-completion | No completion claims without fresh evidence; identify proof command, run, read output/exit code, align claim to evidence. |
-| Verification | verify-this | https://www.skills.sh/cursor/plugins/verify-this | Verification proves/disproves a specific measurable claim; not a recap; require before/after repro for bug fixes. |
-| Verification | verify-behavior | https://www.skills.sh/mthines/agent-skills/verify-behavior | Find cheapest isolated executed proof; classify raw result vs claim as confirms/contradicts/ambiguous/null; do not score. |
-| Verification | forge-qa | https://www.skills.sh/mgiovani/cc-arsenal/forge-qa | Story-centric QA against ACs, coverage, DoD; every verdict grounded in implementation/test evidence; partial is explicit. |
-| Verification | principle-prove-it-works | https://www.skills.sh/cursor/plugins/principle-prove-it-works | Check real thing, not proxy; run full chain input-to-output; suspect observation method when verification fails. |
-| Verification | verifykit | https://www.skills.sh/mimukit/skills/verifykit | For frontend: drive feature like a user, capture screenshots/GIF proof for PR. |
-| Security | code-review-security | https://skills.sh/hieutrtr/ai1-skills/code-review-security | Trigger on PR security, auth/authz, user input/file upload/external data, OWASP, secrets, dependencies, sensitive APIs. |
-| Security | api-security-tester | https://www.skills.sh/kalshamsi/claude-security-skills/api-security-tester | Static API analysis mapped to OWASP API Top 10:2023/CWE; BOLA, auth, excessive exposure, rate limits, SSRF. |
-| Security | security-test-generator | https://www.skills.sh/kalshamsi/claude-security-skills/security-test-generator | Generate executable security tests only when requested; probe SQLi, XSS, CSRF, auth bypass, traversal, SSRF, mass assignment. |
-| Security | security-requirement-extraction | https://skills.sh/rmyndharis/antigravity-skills/security-requirement-extraction | Convert threat models to security requirements, user stories, test cases, acceptance criteria, compliance mappings. |
-| Security | security-pr-checklist-skill | https://skills.sh/patricio0312rev/skills/security-pr-checklist-skill | PR checklist: auth/authz, no hardcoded credentials, secure sessions, rate limiting, input validation. |
-| Delivery | pre-merge-checklist | https://skills.sh/hieutrtr/ai1-skills/pre-merge-checklist | Final PR readiness: automated checks, blocking issues; not in-depth security, implementation, architecture, or E2E creation. |
-| Delivery | git-pr-workflows-git-workflow | https://skills.sh/rmyndharis/antigravity-skills/git-pr-workflows-git-workflow | Orchestrate code review, test automation, deployment readiness, conventional commits, structured PR creation. |
-| Delivery | pre-release | https://www.skills.sh/marcfargas/skills/pre-release | Before publish/version/release PR; run checks, generate changesets/changelog from git history, release readiness report. |
-| Delivery | release | https://www.skills.sh/boshu2/agentops/release | Reversible local release prep; deterministic pre-flight; operator-owned push/publish; bind completion to tag SHA and exact-SHA CI. |
-| Delivery | rollout | https://www.skills.sh/firetiger-oss/skills/rollout | Ship lifecycle: read change, monitoring plan, consentful merge, deploy, monitor, handoff or pivot on regression. |
-| Delivery | ship | https://www.skills.sh/eigent-ai/agent-skills/ship | Make launch decisions explicit: scope, owner, risk, checklist, rollout, metrics, rollback, comms, post-launch decision. |
-| Delivery | release workflow | https://skills.sh/parcadei/continuous-claude-v3/release | Trigger on prepare/cut/release/deploy; structured release preparation to ship confidently. |
+| Architecture | `architecture-scaffold` | https://www.skills.sh/petekp/claude-code-setup/architecture-scaffold | Discovery lead only. |
+| Architecture | `system-architecture` | https://skills.sh/hieutrtr/ai1-skills/system-architecture | Discovery lead only. |
+| Architecture | `api-designer` | https://skills.sh/jeffallan/claude-skills/api-designer | Discovery lead only. |
+| Architecture | `backend-architect` | https://www.skills.sh/rmyndharis/antigravity-skills/backend-architect | Discovery lead only. |
+| Architecture | `implementation-planner` | https://www.skills.sh/jumppad-labs/jumppad/implementation-planner | Discovery lead only. |
+| Product/spec | `requirements-specification` | https://www.skills.sh/nicepkg/ai-workflow/requirements-specification | Discovery lead only. |
+| Product/spec | `deliver-prd` | https://www.skills.sh/product-on-purpose/pm-skills/deliver-prd | Discovery lead only. |
+| Product/spec | `deliver-acceptance-criteria` | https://www.skills.sh/product-on-purpose/pm-skills/deliver-acceptance-criteria | Discovery lead only. |
+| Product/spec | `specification` | https://www.skills.sh/0xranx/agentbrief/specification | Discovery lead only. |
+| Product/spec | `deliver-user-stories` | https://www.skills.sh/product-on-purpose/pm-skills/deliver-user-stories | Discovery lead only. |
+| Product/spec | `user-stories` | https://www.skills.sh/phuryn/pm-skills/user-stories | Discovery lead only. |
+| Code quality | `code-reviewer` | https://www.skills.sh/jeffallan/claude-skills/code-reviewer | Discovery lead only. |
+| Code quality | `code-quality` | https://www.skills.sh/xbklairith/kisune/code-quality | Discovery lead only. |
+| Code quality | `forge-review` | https://www.skills.sh/mgiovani/cc-arsenal/forge-review | Discovery lead only. |
+| Code quality | `code-review` | https://skills.sh/jwynia/agent-skills/code-review | Discovery lead only. |
+| Code quality | `comprehensive-review-full-review` | https://skills.sh/rmyndharis/antigravity-skills/comprehensive-review-full-review | Discovery lead only. |
+| Code quality | `technical-advisory` | https://skills.sh/404kidwiz/claude-supercode-skills/technical-advisory | Discovery lead only. |
+| Verification | `verify-this` | https://www.skills.sh/cursor/plugins/verify-this | Discovery lead only. |
+| Verification | `verify-behavior` | https://www.skills.sh/mthines/agent-skills/verify-behavior | Discovery lead only. |
+| Verification | `forge-qa` | https://www.skills.sh/mgiovani/cc-arsenal/forge-qa | Discovery lead only. |
+| Verification | `principle-prove-it-works` | https://www.skills.sh/cursor/plugins/principle-prove-it-works | Discovery lead only. |
+| Verification | `verifykit` | https://www.skills.sh/mimukit/skills/verifykit | Discovery lead only. |
+| Security | `code-review-security` | https://skills.sh/hieutrtr/ai1-skills/code-review-security | Discovery lead only. |
+| Security | `api-security-tester` | https://www.skills.sh/kalshamsi/claude-security-skills/api-security-tester | Discovery lead only. |
+| Security | `security-test-generator` | https://www.skills.sh/kalshamsi/claude-security-skills/security-test-generator | Discovery lead only. |
+| Security | `security-requirement-extraction` | https://skills.sh/rmyndharis/antigravity-skills/security-requirement-extraction | Discovery lead only. |
+| Security | `security-pr-checklist-skill` | https://skills.sh/patricio0312rev/skills/security-pr-checklist-skill | Discovery lead only. |
+| Delivery | `pre-merge-checklist` | https://skills.sh/hieutrtr/ai1-skills/pre-merge-checklist | Discovery lead only. |
+| Delivery | `git-pr-workflows-git-workflow` | https://skills.sh/rmyndharis/antigravity-skills/git-pr-workflows-git-workflow | Discovery lead only. |
+| Delivery | `release` | https://www.skills.sh/skrrt-sh/skills/release | Requested `skills/release/SKILL.md` and `release/SKILL.md` paths were absent; audited alternate raw source `skills/ship/release/SKILL.md` in the source matrix. |
+| Delivery | `rollout` | https://www.skills.sh/firetiger-oss/skills/rollout | Discovery lead only. |
+| Delivery | `release workflow` | https://skills.sh/parcadei/continuous-claude-v3/release | Discovery lead only. |
+| Delivery | `ship` | https://www.skills.sh/eigent-ai/agent-skills/ship | Repository/license resolved, but no matching raw `ship/SKILL.md` or `skills/ship/SKILL.md` found during audit. |
 
-## Role mappings
+## Per-role synthesis
 
-### product-architect
+### `product-architect`
 
-Sources:
-- https://www.skills.sh/nicepkg/ai-workflow/requirements-specification
-- https://www.skills.sh/product-on-purpose/pm-skills/deliver-prd
-- https://www.skills.sh/product-on-purpose/pm-skills/deliver-acceptance-criteria
-- https://www.skills.sh/0xranx/agentbrief/specification
-- https://www.skills.sh/warpdotdev/common-skills/write-product-spec
-- https://www.skills.sh/product-on-purpose/pm-skills/deliver-user-stories
+Source-grounded principles:
 
-Instruction patterns:
-- Triggers: fuzzy product intent, PRD/spec/story/acceptance-criteria requests, scope alignment before engineering, multiple stakeholders needing shared deliverable.
-- Boundaries: own what/why/scope/outcomes; do not prescribe internal types, algorithms, state layout, data flow, or module boundaries; if problem is contested, frame problem before PRD.
-- Procedure: state user problem and why now; define primary, secondary, and guardrail metrics; describe consumer-visible surface/operations/invariants/edge cases; break work into INVEST stories; convert slices into observable Given/When/Then ACs.
-- Output contract: concise spec/brief with problem, personas, user stories, acceptance criteria, success/guardrail metrics, non-goals, assumptions/open questions.
-- Verification gates: every AC must be pass/fail observable; every story must be valuable/testable; success metric must identify intended behavior change.
-- Red flags: implementation detail in product spec; ambiguous done-ness; story too broad/dependent; metrics absent; acceptance criteria describing tasks instead of behavior.
+- Own behavior, not implementation. Consumer-visible surface, operations, states, and invariants are the artifact.
+- Measure success with outcomes, not shipped outputs.
+- Acceptance criteria must be independently testable and cover happy path, error cases, edge cases, and negative behavior.
+- Non-goals are mandatory when scope can expand.
+- Open questions should name the owner and whether they block downstream work.
 
-### systems-architect
+### `systems-architect`
 
-Sources:
-- https://www.skills.sh/petekp/claude-code-setup/architecture-scaffold
-- https://www.skills.sh/marcus/marcus-skills/architecture-review
-- https://skills.sh/hieutrtr/ai1-skills/system-architecture
-- https://skills.sh/jeffallan/claude-skills/api-designer
-- https://www.skills.sh/rmyndharis/antigravity-skills/backend-architect
-- https://www.skills.sh/jumppad-labs/jumppad/implementation-planner
+Source-grounded principles:
 
-Instruction patterns:
-- Triggers: new module/service/API/subsystem, structural decisions, schema/refactor design, service boundaries, integration patterns, ADR review.
-- Boundaries: own architecture direction and contracts; avoid code-level bugfixes, small scripts, UX-only work; keep implementation planning separate from product specification.
-- Procedure: capture domain context and non-functional requirements; compare feasible approaches; define service boundaries and API/data contracts; model resources before endpoint specs; plan versioning/deprecation; document significant decisions and tradeoffs.
-- Output contract: architecture decision packet with chosen approach, alternatives rejected, contracts/interfaces, risks, observability needs, rollout/migration notes, ADR-worthy decisions.
-- Verification gates: architecture should be enforceable where possible through typed skeleton/contracts/compilers; API contract should be lintable/mockable; decisions should be defensible and traceable to constraints.
-- Red flags: local implementation choices contradict global design; unjustified abstractions; missing NFRs; no rollout/observability plan; undocumented architectural decisions.
+- Own boundaries, interfaces, dependency direction, migration/cutover, and architectural consequences.
+- Compare material options and document rejected alternatives.
+- Prefer guardrails and typed/public contracts over process-heavy gates.
+- Choose the smallest end-to-end slice that validates the riskiest boundary.
+- Escalate unclear behavior to product ownership instead of inventing product intent.
 
-### principal-engineer
+### `principal-engineer`
 
-Sources:
-- https://www.skills.sh/jeffallan/claude-skills/code-reviewer
-- https://www.skills.sh/xbklairith/kisune/code-quality
-- https://www.skills.sh/mgiovani/cc-arsenal/forge-review
-- https://skills.sh/jwynia/agent-skills/code-review
-- https://skills.sh/rmyndharis/antigravity-skills/comprehensive-review-full-review
-- https://skills.sh/404kidwiz/claude-supercode-skills/technical-advisory
-- https://www.skills.sh/jumppad-labs/jumppad/implementation-planner
+Source-grounded principles:
 
-Instruction patterns:
-- Triggers: implementation strategy, post-feature quality pass, PR/self-review, refactor/optimization/code smell, complex engineering tradeoff.
-- Boundaries: own implementation/code quality and technical tradeoffs; do not replace product intent, architecture ownership, or security-specific audit when those are primary.
-- Procedure: first summarize change intent; compare against existing patterns; inspect structure then details; check security/performance footguns; evaluate tests for behavior/edge coverage; prioritize remediation.
-- Output contract: categorized findings with severity, evidence, why it matters, recommended fix; for implementation guidance include tradeoffs and chosen boring path.
-- Verification gates: tests must assert behavior not implementation; critical findings surfaced immediately; recommendations grounded in code or explicit constraints.
-- Red flags: cannot state PR intent; new abstraction without clear payoff; untested edge cases; N+1/injection/secrets; review comments not actionable; refactor changes behavior silently.
+- Fix causes, preserve behavior unless explicitly asked, and migrate every caller in a clean cutover.
+- Reuse existing patterns; avoid needless abstractions and compatibility shims.
+- Review implementation across correctness, simplicity, architecture, security, and performance, with severity tied to production impact.
+- Refactor in small behavior-preserving increments with baseline evidence.
+- Verify before reporting success.
 
-### verification-lead
+### `verification-lead`
 
-Sources:
-- https://www.skills.sh/obra/superpowers/verification-before-completion
-- https://www.skills.sh/cursor/plugins/verify-this
-- https://www.skills.sh/mthines/agent-skills/verify-behavior
-- https://www.skills.sh/mgiovani/cc-arsenal/forge-qa
-- https://www.skills.sh/cursor/plugins/principle-prove-it-works
-- https://www.skills.sh/mimukit/skills/verifykit
-- https://www.skills.sh/kalshamsi/claude-security-skills/security-test-generator
+Source-grounded principles:
 
-Instruction patterns:
-- Triggers: completion/fix/passing claims, user asks prove/verify/evidence, bug fix before/after, story QA against ACs, UI proof needed.
-- Boundaries: prove/disprove specific measurable claims; do not recap, score confidence, or grade intent beyond caller-owned criteria; require measurable claim if vague.
-- Procedure: identify claim and cheapest direct proof; run isolated command or real user path; read full output/exit code; compare evidence to exact claim; classify confirms/contradicts/ambiguous/null; for story QA map ACs to files/tests and PASS/PARTIAL/FAIL.
-- Output contract: receipt with claim, method, command/scenario, raw result, verdict, evidence refs, limits/ambiguities.
-- Verification gates: no success claim without fresh evidence; check real thing not proxy; bug fixes require repro no longer triggers; UI requires user-like flow and visual evidence when applicable.
-- Red flags: trusting agent self-report, linter as build proof, cached screenshots, assumed coverage, no file/test refs, broad “works” claim, PASS where only partial evidence exists.
+- Proof precedes completion claims.
+- Select proof by observable contract: unit/integration/contract/e2e/browser/CLI/API/job smoke as appropriate.
+- Bug fixes require a reproduction path and confirmation that the original failure no longer triggers.
+- Durable tests are for new or changed observable contracts; smoke evidence is enough for one-off runtime proof when no durable test is warranted.
+- Report raw result, verdict, and remaining ambiguity.
 
-### security-architect
+### `security-architect`
 
-Sources:
-- https://skills.sh/hieutrtr/ai1-skills/code-review-security
-- https://www.skills.sh/kalshamsi/claude-security-skills/api-security-tester
-- https://www.skills.sh/kalshamsi/claude-security-skills/security-test-generator
-- https://skills.sh/rmyndharis/antigravity-skills/security-requirement-extraction
-- https://skills.sh/patricio0312rev/skills/security-pr-checklist-skill
-- https://skills.sh/rmyndharis/antigravity-skills/backend-architect
+Source-grounded principles:
 
-Instruction patterns:
-- Triggers: auth/authz changes, API endpoints/resolvers/middleware, user input/upload/external data, sensitive data exposure, rate limiting, OWASP/CWE/security tests/threat model/compliance.
-- Boundaries: distinguish security audit, requirements extraction, and executable security-test generation; do not generate exploit tests unless asked for runnable security tests; escalate beyond generic PR checklist for deep API risks.
-- Procedure: map attack surface; review authn/authz, object-level access, input validation/output encoding, secrets, session management, rate limiting, dependency exposure, SSRF/mass assignment/data exposure; convert threats into requirements/ACs/tests.
-- Output contract: findings with severity, file:line/evidence, CWE/OWASP mapping when applicable, exploitability, remediation, regression-test idea.
-- Verification gates: each finding should cite exact route/resolver/middleware or config; security requirements must be testable; executable tests should actively probe vulnerabilities.
-- Red flags: hardcoded credentials; missing authorization on endpoints; insecure sessions; absent auth rate limits; overbroad data returned; mass assignment; SSRF/path traversal; security keyword used without actual security scope.
+- Model assets, trust boundaries, entry points, attackers, assumptions, and controls before findings.
+- Prioritize realistic abuse paths over checklist completion.
+- API review must cover authn/authz, object/field-level access, resource consumption, business-flow abuse, SSRF, misconfiguration, version inventory, and unsafe upstream consumption where in scope.
+- Findings need evidence, exploitability, impact, remediation, and proof expectations.
+- Security tests or exploit payloads are generated only when explicitly requested.
 
-### delivery-lead
+### `delivery-lead`
 
-Sources:
-- https://skills.sh/hieutrtr/ai1-skills/pre-merge-checklist
-- https://skills.sh/rmyndharis/antigravity-skills/git-pr-workflows-git-workflow
-- https://www.skills.sh/marcfargas/skills/pre-release
-- https://www.skills.sh/boshu2/agentops/release
-- https://www.skills.sh/firetiger-oss/skills/rollout
-- https://www.skills.sh/eigent-ai/agent-skills/ship
-- https://skills.sh/parcadei/continuous-claude-v3/release
-
-Instruction patterns:
-- Triggers: PR ready to merge, release/version/publish/deploy/ship/cut release, post-review final pass, rollout monitoring.
-- Boundaries: own readiness/orchestration/evidence handoff; do not perform in-depth security audit, architecture decisions, implementation, or publish/push without explicit operator-controlled boundary.
-- Procedure: confirm release scope/owner/risk/users/dependencies; run readiness checklist; ensure code review/test/deployment readiness; generate changelog/changesets from actual git range; plan rollout, monitoring, comms, rollback; monitor and decide continue/pause/expand/rollback.
-- Output contract: readiness report with pass/fail/blockers, release notes/changelog source range, rollout plan, success/guardrail metrics, rollback/mitigation, exact evidence refs.
-- Verification gates: deterministic pre-flight before tag/release; completion bound to exact tag SHA/CI, not green branch; merge/deploy/publish actions require consent; post-launch compare live metrics to expected ranges.
-- Red flags: invented release notes; unverified tag; green branch treated as release proof; skip-checks without degraded-state note; deploy treated as release; no rollback owner/path.
+Source-grounded principles:
+- Delivery is evidence packaging and risk decisioning, not a rubber stamp.
+- Commit, push, PR, merge, deploy, publish, and release are separate explicitly authorized actions.
+- Pre-launch/release gates must read actual diff/status/check output and stop on blocking failures.
+- Release notes and readiness reports come from real tags, commits, diffs, and observed checks, not invented summaries.
+- Tags and release artifacts are immutable unless a human explicitly authorizes a corrective release operation.
+- Risky production-facing work needs rollback/recovery ownership and post-launch monitoring expectations.

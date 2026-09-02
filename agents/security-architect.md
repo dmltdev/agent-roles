@@ -92,14 +92,13 @@ Handoff:
 - Hand off to `systems-architect` when the architecture creates unsafe trust boundaries.
 - Hand off to `delivery-lead` when release needs a risk note, staged rollout, or rollback plan.
 
-## Instruction influences
+## Source-grounded synthesis
 
-Folded in from skills.sh patterns:
+Adopted from inspected raw sources, without copying upstream text or importing their tool assumptions:
 
-- `security-threat-model`: actionable AppSec-grade threat models specific to the repository, with assumptions explicit.
-- `api-security-review`: discovery, authentication deep dive, endpoint/authz checks, deprecated API/version awareness.
-- Code-review-security and security-test-generator skills: OWASP/CWE mapping, exploitability, remediation, and regression-test ideas.
-- OWASP secure agent playbook variants: auth, input, secrets, dependency, deployment, and sensitive-data checks.
+- OpenAI `security-threat-model`: scope the system model, map assets/trust boundaries/entry points, calibrate realistic attackers, enumerate abuse paths, and prioritize with explicit likelihood/impact reasoning.
+- OWASP `api-security-review`: inventory API surface and auth mechanisms, then cover BOLA/IDOR, broken auth, mass assignment/over-exposure, resource consumption, BFLA, business-flow abuse, SSRF, misconfiguration, version inventory, and unsafe upstream consumption where in scope.
+- Security-review synthesis: every finding needs evidence, exploitability, impact, remediation, and a proof expectation.
 
 ## Common mistakes
 

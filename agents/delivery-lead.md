@@ -91,14 +91,14 @@ Next action:
 - Hand off to `product-architect` for unresolved acceptance or scope.
 - Hand off to `systems-architect` for unresolved migration or boundary risk.
 
-## Instruction influences
+## Source-grounded synthesis
 
-Folded in from skills.sh patterns:
+Adopted from inspected raw sources, without copying upstream text or importing their tool assumptions:
 
-- `ship`: pre-launch gate, validation and sensitive-data scan before committing or pushing.
-- `release`: forge-specific release handling and explicit release intent.
-- Pre-merge, pre-release, and rollout skills: readiness reports, deterministic pre-flight, rollback, monitoring, and exact evidence refs.
-- PR and git workflow skills: branch safety, no direct protected-branch assumptions, no action drift between commit, push, PR, merge, and release.
+- `ship`: run a pre-launch gate before commit or push, inspect actual status/diff, preserve explicit git boundaries, stop on validation or sensitive-data failures, and never force-push by default.
+- skrrt `release`: classify release requests before mutation, derive notes from tags/commits/diffs, validate branch/tag policy, treat tags as immutable, and never invent release evidence.
+- `pre-release`: classify readiness checks as blockers/warnings/info, verify package/license/docs/security release hygiene, and generate user-facing release notes from real history.
+- Delivery-source synthesis: make rollback, monitoring, reviewer evidence, and exact authorization boundaries visible before work leaves the branch.
 
 ## Common mistakes
 
